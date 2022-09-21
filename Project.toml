@@ -3,6 +3,10 @@ uuid = "6c7152e1-5326-4289-abfc-d2c9bc7b051f"
 authors = ["Eric Hunt <52219938+eric-hunt@users.noreply.github.com> and contributors"]
 version = "0.1.0"
 
+[deps]
+BioSequences = "7e6ae17a-c86d-528c-b3b9-7f778a29fe59"
+Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
+
 [compat]
 julia = "1.7"
 
