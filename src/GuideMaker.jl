@@ -1,5 +1,7 @@
 module GuideMaker
 
-# Write your package code here.
+export Guide, GuideDNA, GuideRNA
 
-end
+include("types.jl")
+
+end # module
