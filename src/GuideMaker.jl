@@ -24,7 +24,6 @@ function _makeslices(
     sequence::S, window::Integer; 
     include_overhang::Bool = true
 ) where {S <: BioSequences.LongSequence}
-	
     seqlength = length(sequence)
     ∆ = window - 1 # \increment
     # if sequence::S is (+) strand..
