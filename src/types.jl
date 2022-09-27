@@ -25,3 +25,14 @@ struct GuideRNA <: Guide
     altbases::Union{Vector{BioSequences.RNA}, Nothing}
     altseqs::Union{Vector{BioSequences.LongRNA}, Nothing}
 end # struct GuideRNA
+
+"""
+Traits
+"""
+abstract type GuideTrait end
+struct IsDNA <: GuideTrait end
+struct IsRNA <: GuideTrait end
+
+GuideTrait(::Type) = IsDNA() # default
+GuideTrait(::Type{<: BioSequences.LongDNA}) = IsDNA()
+GuideTrait(::Type{<: BioSequences.LongRNA}) = IsRNA()
