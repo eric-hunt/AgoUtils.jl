@@ -12,10 +12,11 @@ using BioSequences: DNA_A, DNA_C, DNA_G, DNA_T, RNA_A, RNA_C, RNA_G, RNA_U
 const DNA_NUCS = BioSequences.DNA[DNA_A, DNA_C, DNA_G, DNA_T]
 const RNA_NUCS = BioSequences.RNA[RNA_A, RNA_C, RNA_G, RNA_U]
 
+
 """
-    makeslices(
+    _makeslices(
         sequence::S, window::Integer; 
-        include_overhang = true
+        include_overhang::Bool = true
     ) where {S <: BioSequences.LongSequence}
 
 Make slices of a sequence using a sliding window.
@@ -45,11 +46,12 @@ function _makeslices(
     return slices
 end # function _makeslices
 
+
 """
     makeguides(
-    target::BioSequences.LongSequence, size::Integer;
-    GuideType::Type{G} = BioSequences.LongDNA{4}, include_overhang::Bool = true
-) where {G <: BioSequences.LongSequence}
+        target::BioSequences.LongSequence, size::Integer;
+        GuideType::Type{G} = BioSequences.LongDNA{4}, include_overhang::Bool = true
+    ) where {G <: BioSequences.LongSequence}
 
 Dispatch on traits
 """
@@ -60,11 +62,12 @@ function makeguides(
     return makeguides(GuideTrait(G), target, size, GuideType; include_overhang)
 end # function makeguides
 
+
 """
     makeguides(
-    ::IsDNA, target::BioSequences.LongSequence, size::Integer, ::Type{G};
-    include_overhang::Bool
-) where {G <: BioSequences.LongSequence}
+        ::IsDNA, target::BioSequences.LongSequence, size::Integer, ::Type{G};
+        include_overhang::Bool
+    ) where {G <: BioSequences.LongSequence}
 
 Create DNA guides
 """
@@ -89,11 +92,12 @@ function makeguides(
     return guides
 end # function makeguides (IsDNA)
 
+
 """
     makeguides(
-    ::IsRNA, target::BioSequences.LongSequence, size::Integer, ::Type{G};
-    include_overhang::Bool
-) where {G <: BioSequences.LongSequence}
+        ::IsRNA, target::BioSequences.LongSequence, size::Integer, ::Type{G};
+        include_overhang::Bool
+    ) where {G <: BioSequences.LongSequence}
 
 Create RNA guides
 """

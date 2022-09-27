@@ -4,10 +4,12 @@ Types
 
 import BioSequences
 
+
 """
 Abstract guide type
 """
 abstract type Guide end # abstract Guide
+
 
 """
 Concrete guide types
@@ -25,6 +27,7 @@ struct GuideRNA <: Guide
     altbases::Union{Vector{BioSequences.RNA}, Nothing}
     altseqs::Union{Vector{BioSequences.LongRNA}, Nothing}
 end # struct GuideRNA
+
 
 """
 Traits
