@@ -7,6 +7,10 @@ include("types.jl")
 import BioSequences
 
 using BioSequences: @dna_str, @rna_str
+using BioSequences: DNA_A, DNA_C, DNA_G, DNA_T, RNA_A, RNA_C, RNA_G, RNA_U
+
+const DNA_NUCS = BioSequences.DNA[DNA_A, DNA_C, DNA_G, DNA_T]
+const RNA_NUCS = BioSequences.RNA[RNA_A, RNA_C, RNA_G, RNA_U]
 
 """
     makeslices(
@@ -56,5 +60,34 @@ function makeguides(
 ) where {G <: BioSequences.LongSequence}
     return makeguides(GuideTrait(G), target, size, GuideType; include_overhang)
 end # function makeguides
+
+"""
+    makeguides(
+    ::IsDNA, target::BioSequences.LongSequence, size::Integer, ::Type{G};
+    include_overhang::Bool
+) where {G <: BioSequences.LongSequence}
+
+Create DNA guides
+"""
+function makeguides(
+    ::IsDNA, target::BioSequences.LongSequence, size::Integer, ::Type{G};
+    include_overhang::Bool
+) where {G <: BioSequences.LongSequence}
+    sliceseqs = _makeslices(target, size; include_overhang = include_overhang)
+    guideseqs = convert.(G, sliceseqs)
+
+    guides = Vector{GuideDNA}()
+    for i in eachindex(guideseqs)
+        seq = guideseqs[i]
+        first = seq[begin]
+        altnucs = setdiff(DNA_NUCS, [first])
+        altseqs = Vector{G}(undef, length(altnucs))
+        for n in eachindex(altnucs)
+            altseqs[n] = pushfirst!(seq[begin+1:end], altnucs[n])
+        end
+        push!(guides, GuideDNA(seq, first, altnucs, altseqs))
+    end
+    return guides
+end # function makeguides (IsDNA)
 
 end # module
