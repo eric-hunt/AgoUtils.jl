@@ -89,4 +89,33 @@ function makeguides(
     return guides
 end # function makeguides (IsDNA)
 
+"""
+    makeguides(
+    ::IsRNA, target::BioSequences.LongSequence, size::Integer, ::Type{G};
+    include_overhang::Bool
+) where {G <: BioSequences.LongSequence}
+
+Create RNA guides
+"""
+function makeguides(
+    ::IsRNA, target::BioSequences.LongSequence, size::Integer, ::Type{G};
+    include_overhang::Bool
+) where {G <: BioSequences.LongSequence}
+    sliceseqs = _makeslices(target, size; include_overhang = include_overhang)
+    guideseqs = convert.(G, sliceseqs)
+
+    guides = Vector{GuideRNA}()
+    for i in eachindex(guideseqs)
+        seq = guideseqs[i]
+        first = seq[begin]
+        altnucs = setdiff(RNA_NUCS, [first])
+        altseqs = Vector{G}(undef, length(altnucs))
+        for n in eachindex(altnucs)
+            altseqs[n] = pushfirst!(seq[begin+1:end], altnucs[n])
+        end
+        push!(guides, GuideRNA(seq, first, altnucs, altseqs))
+    end
+    return guides
+end # function makeguides (IsRNA)
+
 end # module
