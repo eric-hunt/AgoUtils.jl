@@ -1,6 +1,6 @@
 module GuideMaker
 
-export Guide, GuideDNA, GuideRNA
+export Guide, GuideDNA, GuideRNA, makeguides
 
 include("types.jl")
 
@@ -10,24 +10,24 @@ using BioSequences: @dna_str, @rna_str
 
 """
     makeslices(
-        sequence::T, window::Integer; 
+        sequence::S, window::Integer; 
         include_overhang = true
-    ) where {T <: BioSequences.LongSequence}
+    ) where {S <: BioSequences.LongSequence}
 
 Make slices of a sequence using a sliding window.
 """
 function _makeslices(
-    sequence::T, window::Integer; 
-    include_overhang = true
-) where {T <: BioSequences.LongSequence}
+    sequence::S, window::Integer; 
+    include_overhang::Bool = true
+) where {S <: BioSequences.LongSequence}
 	
     seqlength = length(sequence)
     ∆ = window - 1 # \increment
-    # if sequence::T is (+) strand..
+    # if sequence::S is (+) strand..
     # create slices from (-) strand in 3' -> 5' orientation
     complement = BioSequences.complement(sequence)
     
-    slices = Vector{T}()
+    slices = Vector{S}()
     for i = 1:(seqlength-∆)
         push!(slices, complement[range(i, i + ∆)])
     end
@@ -41,5 +41,20 @@ function _makeslices(
 	
     return slices
 end # function _makeslices
+
+"""
+    makeguides(
+    target::BioSequences.LongSequence, size::Integer;
+    GuideType::Type{G} = BioSequences.LongDNA{4}, include_overhang::Bool = true
+) where {G <: BioSequences.LongSequence}
+
+Dispatch on traits
+"""
+function makeguides(
+    target::BioSequences.LongSequence, size::Integer;
+    GuideType::Type{G} = BioSequences.LongDNA{4}, include_overhang::Bool = true
+) where {G <: BioSequences.LongSequence}
+    return makeguides(GuideTrait(G), target, size, GuideType; include_overhang)
+end # function makeguides
 
 end # module
