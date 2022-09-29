@@ -27,14 +27,14 @@ const RNA_NUCS = RNA[RNA_A, RNA_C, RNA_G, RNA_U]
     _makeslices(
         sequence::S, window::Integer; 
         include_overhang::Bool = true
-    ) where {S <: BioSequences.LongSequence}
+    ) where {S <: LongNuc}
 
 Make slices of a sequence using a sliding window.
 """
 function _makeslices(
     sequence::S, window::Integer; 
-    include_overhang::Bool = true
-) where {S <: BioSequences.LongSequence}
+    include_overhang::Bool
+) where {S <: LongNuc}
     seqlength = length(sequence)
     ∆ = window - 1 # \increment
     # if sequence::S is (+) strand..
