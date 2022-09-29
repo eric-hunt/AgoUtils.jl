@@ -19,8 +19,8 @@ using BioSymbols: BioSymbols.NucleicAcid, BioSymbols.DNA, BioSymbols.RNA,
     DNA_A, DNA_C, DNA_G, DNA_T, RNA_A, RNA_C, RNA_G, RNA_U
 
 
-const DNA_NUCS = BioSequences.DNA[DNA_A, DNA_C, DNA_G, DNA_T]
-const RNA_NUCS = BioSequences.RNA[RNA_A, RNA_C, RNA_G, RNA_U]
+const DNA_NUCS = DNA[DNA_A, DNA_C, DNA_G, DNA_T]
+const RNA_NUCS = RNA[RNA_A, RNA_C, RNA_G, RNA_U]
 
 
 """
