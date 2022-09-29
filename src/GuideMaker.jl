@@ -1,13 +1,23 @@
 module GuideMaker
 
-export Guide, GuideDNA, GuideRNA, makeguides
+export 
+    # Types
+    NucleicAcidGuide, Guide, GuideDNA, GuideRNA,
+    # Methods
+    makeguides,
+    # From other package namespaces needed to use GuideMaker.jl
+    DNAAlphabet,
+    RNAAlphabet,
+    @dna_str,
+    @rna_str
 
 include("types.jl")
 
-import BioSequences
+using BioSequences: BioSequences, LongSequence, LongNuc, NucleicAcidAlphabet,
+    @dna_str, @rna_str
+using BioSymbols: BioSymbols.NucleicAcid, BioSymbols.DNA, BioSymbols.RNA,
+    DNA_A, DNA_C, DNA_G, DNA_T, RNA_A, RNA_C, RNA_G, RNA_U
 
-using BioSequences: @dna_str, @rna_str
-using BioSequences: DNA_A, DNA_C, DNA_G, DNA_T, RNA_A, RNA_C, RNA_G, RNA_U
 
 const DNA_NUCS = BioSequences.DNA[DNA_A, DNA_C, DNA_G, DNA_T]
 const RNA_NUCS = BioSequences.RNA[RNA_A, RNA_C, RNA_G, RNA_U]
