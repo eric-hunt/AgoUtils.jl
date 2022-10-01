@@ -1,30 +1,40 @@
 module GuideMaker
 
-export Guide, GuideDNA, GuideRNA, makeguides
+export 
+    # Types
+    NucleicAcidGuide, Guide, GuideDNA, GuideRNA,
+    # Methods
+    makeguides,
+    # From other package namespaces needed to use GuideMaker.jl
+    DNAAlphabet,
+    RNAAlphabet,
+    @dna_str,
+    @rna_str
 
 include("types.jl")
 
-import BioSequences
+using BioSequences: BioSequences, LongSequence, LongNuc, NucleicAcidAlphabet,
+    @dna_str, @rna_str
+using BioSymbols: BioSymbols.NucleicAcid, BioSymbols.DNA, BioSymbols.RNA,
+    DNA_A, DNA_C, DNA_G, DNA_T, RNA_A, RNA_C, RNA_G, RNA_U
 
-using BioSequences: @dna_str, @rna_str
-using BioSequences: DNA_A, DNA_C, DNA_G, DNA_T, RNA_A, RNA_C, RNA_G, RNA_U
 
-const DNA_NUCS = BioSequences.DNA[DNA_A, DNA_C, DNA_G, DNA_T]
-const RNA_NUCS = BioSequences.RNA[RNA_A, RNA_C, RNA_G, RNA_U]
+const DNA_NUCS = DNA[DNA_A, DNA_C, DNA_G, DNA_T]
+const RNA_NUCS = RNA[RNA_A, RNA_C, RNA_G, RNA_U]
 
 
 """
     _makeslices(
         sequence::S, window::Integer; 
         include_overhang::Bool = true
-    ) where {S <: BioSequences.LongSequence}
+    ) where {S <: LongNuc}
 
 Make slices of a sequence using a sliding window.
 """
 function _makeslices(
     sequence::S, window::Integer; 
-    include_overhang::Bool = true
-) where {S <: BioSequences.LongSequence}
+    include_overhang::Bool
+) where {S <: LongNuc}
     seqlength = length(sequence)
     ∆ = window - 1 # \increment
     # if sequence::S is (+) strand..
@@ -49,77 +59,31 @@ end # function _makeslices
 
 """
     makeguides(
-        target::BioSequences.LongSequence, size::Integer;
-        GuideType::Type{G} = BioSequences.LongDNA{4}, include_overhang::Bool = true
-    ) where {G <: BioSequences.LongSequence}
-
-Dispatch on traits
-"""
-function makeguides(
-    target::BioSequences.LongSequence, size::Integer;
-    GuideType::Type{G} = BioSequences.LongDNA{4}, include_overhang::Bool = true
-) where {G <: BioSequences.LongSequence}
-    return makeguides(GuideTrait(G), target, size, GuideType; include_overhang)
-end # function makeguides
-
-
-"""
-    makeguides(
-        ::IsDNA, target::BioSequences.LongSequence, size::Integer, ::Type{G};
+        target::LongNuc, size::Integer, ::Type{A};
         include_overhang::Bool
-    ) where {G <: BioSequences.LongSequence}
+    ) where {A <: NucleicAcidAlphabet}
 
-Create DNA guides
+Create guides for a sequence
 """
 function makeguides(
-    ::IsDNA, target::BioSequences.LongSequence, size::Integer, ::Type{G};
-    include_overhang::Bool
-) where {G <: BioSequences.LongSequence}
+    target::LongNuc, size::Integer, ::Type{A};
+    include_overhang::Bool = true
+) where {A <: NucleicAcidAlphabet}
     sliceseqs = _makeslices(target, size; include_overhang = include_overhang)
-    guideseqs = convert.(G, sliceseqs)
+    guideseqs = convert.(LongSequence{A}, sliceseqs)
 
-    guides = Vector{GuideDNA}()
+    guides = Vector{NucleicAcidGuide}()
     for i in eachindex(guideseqs)
         seq = guideseqs[i]
         first = seq[begin]
         altnucs = setdiff(DNA_NUCS, [first])
-        altseqs = Vector{G}(undef, length(altnucs))
+        altseqs = Vector{LongSequence{A}}(undef, length(altnucs))
         for n in eachindex(altnucs)
             altseqs[n] = pushfirst!(seq[begin+1:end], altnucs[n])
         end
-        push!(guides, GuideDNA(seq, first, altnucs, altseqs))
+        push!(guides, NucleicAcidGuide{A}(seq, first, altnucs, altseqs))
     end
     return guides
-end # function makeguides (IsDNA)
-
-
-"""
-    makeguides(
-        ::IsRNA, target::BioSequences.LongSequence, size::Integer, ::Type{G};
-        include_overhang::Bool
-    ) where {G <: BioSequences.LongSequence}
-
-Create RNA guides
-"""
-function makeguides(
-    ::IsRNA, target::BioSequences.LongSequence, size::Integer, ::Type{G};
-    include_overhang::Bool
-) where {G <: BioSequences.LongSequence}
-    sliceseqs = _makeslices(target, size; include_overhang = include_overhang)
-    guideseqs = convert.(G, sliceseqs)
-
-    guides = Vector{GuideRNA}()
-    for i in eachindex(guideseqs)
-        seq = guideseqs[i]
-        first = seq[begin]
-        altnucs = setdiff(RNA_NUCS, [first])
-        altseqs = Vector{G}(undef, length(altnucs))
-        for n in eachindex(altnucs)
-            altseqs[n] = pushfirst!(seq[begin+1:end], altnucs[n])
-        end
-        push!(guides, GuideRNA(seq, first, altnucs, altseqs))
-    end
-    return guides
-end # function makeguides (IsRNA)
+end # function makeguides
 
 end # module
