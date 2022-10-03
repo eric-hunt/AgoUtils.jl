@@ -20,10 +20,6 @@ using BioSymbols: BioSymbols.NucleicAcid, BioSymbols.DNA, BioSymbols.RNA,
     DNA_A, DNA_C, DNA_G, DNA_T, RNA_A, RNA_C, RNA_G, RNA_U
 
 
-const DNA_NUCS = DNA[DNA_A, DNA_C, DNA_G, DNA_T]
-const RNA_NUCS = RNA[RNA_A, RNA_C, RNA_G, RNA_U]
-
-
 """
     makeguides(
         target::LongNuc, size::Integer, ::Type{A};
@@ -43,7 +39,7 @@ function makeguides(
     for i in eachindex(guideseqs)
         seq = guideseqs[i]
         first = seq[begin]
-        altnucs = setdiff(DNA_NUCS, [first])
+        altnucs = setdiff(_altbases(A), [first])
         altseqs = Vector{LongSequence{A}}(undef, length(altnucs))
         for n in eachindex(altnucs)
             altseqs[n] = pushfirst!(seq[begin+1:end], altnucs[n])

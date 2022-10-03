@@ -2,7 +2,7 @@
 Utilities
 """
 
-using BioSequences: BioSequences, LongNuc
+using BioSequences: BioSequences, LongNuc, DNAAlphabet, RNAAlphabet
 
 
 """
@@ -37,3 +37,12 @@ function _makeslices(
 	
     return slices
 end # function _makeslices
+
+
+"""
+    _altbases(::A) where {A <: NucleicAcidAlphabet}
+
+Get alternate bases for Alphabet
+"""
+_altbases(::Type{<: DNAAlphabet}) = BioSequences.symbols(DNAAlphabet{2}())
+_altbases(::Type{<: RNAAlphabet}) = BioSequences.symbols(RNAAlphabet{2}())
