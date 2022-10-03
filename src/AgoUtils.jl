@@ -1,11 +1,11 @@
-module GuideMaker
+module AgoUtils
 
 export 
     # Types
     NucleicAcidGuide, Guide, GuideDNA, GuideRNA,
     # Methods
     makeguides,
-    # From other package namespaces needed to use GuideMaker.jl
+    # From other package namespaces needed to use AgoUtils.jl
     DNAAlphabet,
     RNAAlphabet,
     @dna_str,

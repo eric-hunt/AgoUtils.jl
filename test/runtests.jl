@@ -1,6 +1,6 @@
-using GuideMaker
+using AgoUtils
 using Test
 
-@testset "GuideMaker.jl" begin
+@testset "AgoUtils.jl" begin
     # Write your tests here.
 end

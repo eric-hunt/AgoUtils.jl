@@ -1,5 +1,5 @@
-name = "GuideMaker"
-uuid = "6c7152e1-5326-4289-abfc-d2c9bc7b051f"
+name = "AgoUtils"
+uuid = "0070b694-1cb7-4e8a-9786-c446f0c4a692"
 authors = ["Eric Hunt <52219938+eric-hunt@users.noreply.github.com> and contributors"]
 version = "0.1.0"
 
