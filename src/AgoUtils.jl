@@ -12,6 +12,7 @@ export
     @rna_str
 
 include("types.jl")
+include("utils.jl")
 
 using BioSequences: BioSequences, LongSequence, LongNuc, NucleicAcidAlphabet,
     @dna_str, @rna_str
@@ -21,40 +22,6 @@ using BioSymbols: BioSymbols.NucleicAcid, BioSymbols.DNA, BioSymbols.RNA,
 
 const DNA_NUCS = DNA[DNA_A, DNA_C, DNA_G, DNA_T]
 const RNA_NUCS = RNA[RNA_A, RNA_C, RNA_G, RNA_U]
-
-
-"""
-    _makeslices(
-        sequence::S, window::Integer; 
-        include_overhang::Bool = true
-    ) where {S <: LongNuc}
-
-Make slices of a sequence using a sliding window.
-"""
-function _makeslices(
-    sequence::S, window::Integer; 
-    include_overhang::Bool
-) where {S <: LongNuc}
-    seqlength = length(sequence)
-    ∆ = window - 1 # \increment
-    # if sequence::S is (+) strand..
-    # create slices from (-) strand in 3' -> 5' orientation
-    complement = BioSequences.complement(sequence)
-    
-    slices = Vector{S}()
-    for i = 1:(seqlength-∆)
-        push!(slices, complement[range(i, i + ∆)])
-    end
-    
-    if include_overhang
-        push!(slices, push!(last(slices)[begin+1:end], 'A'))
-    end
-
-    # return (-) strand slices in 5' -> 3' orientation
-	reverse!.(slices)
-	
-    return slices
-end # function _makeslices
 
 
 """
