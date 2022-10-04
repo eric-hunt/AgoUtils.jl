@@ -13,6 +13,7 @@ export
 
 include("types.jl")
 include("utils.jl")
+include("printing.jl")
 
 using BioSequences: BioSequences, LongSequence, LongNuc, NucleicAcidAlphabet,
     @dna_str, @rna_str
