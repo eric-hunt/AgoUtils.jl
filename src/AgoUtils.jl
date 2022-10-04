@@ -1,6 +1,6 @@
 module AgoUtils
 
-export 
+export
     # Types
     NucleicAcidGuide, Guide, GuideDNA, GuideRNA,
     # Methods
@@ -31,9 +31,9 @@ Create guides for a sequence
 """
 function makeguides(
     target::LongNuc, size::Integer, ::Type{A};
-    include_overhang::Bool = true
-) where {A <: NucleicAcidAlphabet}
-    sliceseqs = _makeslices(target, size; include_overhang = include_overhang)
+    include_overhang::Bool=true
+) where {A<:NucleicAcidAlphabet}
+    sliceseqs = _makeslices(target, size; include_overhang=include_overhang)
     guideseqs = convert.(LongSequence{A}, sliceseqs)
 
     guides = Vector{NucleicAcidGuide}()
