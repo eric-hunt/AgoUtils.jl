@@ -5,6 +5,7 @@ export
     NucleicAcidGuide, Guide, GuideDNA, GuideRNA,
     # Methods
     makeguides,
+    compileguides,
     # From other package namespaces needed to use AgoUtils.jl
     DNAAlphabet,
     RNAAlphabet,
@@ -49,5 +50,16 @@ function makeguides(
     end
     return guides
 end # function makeguides
+
+
+"""
+    compileguides(guides::Vector{NucleicAcidGuide})
+
+Compile all guide sequences for a substrate in order.
+"""
+function compileguides(guides::Vector{NucleicAcidGuide})
+    compiled = mapreduce(_fetchseqs, vcat, guides)
+    return compiled
+end # function compileguides
 
 end # module
