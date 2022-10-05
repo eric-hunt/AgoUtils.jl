@@ -46,3 +46,14 @@ Get alternate bases for Alphabet
 """
 _altbases(::Type{<:DNAAlphabet}) = BioSequences.symbols(DNAAlphabet{2}())
 _altbases(::Type{<:RNAAlphabet}) = BioSequences.symbols(RNAAlphabet{2}())
+
+
+"""
+    _fetchseqs(guide::NucleicAcidGuide)
+
+Get all sequences for a single guide.
+"""
+function _fetchseqs(guide::NucleicAcidGuide)
+	seqs = [guide.seq, guide.altseqs...]
+	return seqs
+end # function _fetchseqs
