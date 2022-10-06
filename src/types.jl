@@ -2,9 +2,7 @@
 Types
 """
 
-using BioSequences: LongSequence, LongNuc, LongDNA, LongRNA,
-    NucleicAcidAlphabet, DNAAlphabet, RNAAlphabet
-using BioSymbols: BioSymbols.NucleicAcid, BioSymbols.DNA, BioSymbols.RNA
+using BioSequences: LongSequence, NucleicAcidAlphabet, DNAAlphabet, RNAAlphabet, NucleicAcid
 
 
 """
