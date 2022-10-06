@@ -38,15 +38,8 @@ function makeguides(
     guideseqs = convert.(LongSequence{A}, sliceseqs)
 
     guides = Vector{NucleicAcidGuide}()
-    for i in eachindex(guideseqs)
-        seq = guideseqs[i]
-        first = seq[begin]
-        altnucs = setdiff(_altbases(A), [first])
-        altseqs = Vector{LongSequence{A}}(undef, length(altnucs))
-        for n in eachindex(altnucs)
-            altseqs[n] = pushfirst!(seq[begin+1:end], altnucs[n])
-        end
-        push!(guides, NucleicAcidGuide{A}(seq, first, altnucs, altseqs))
+    for seq in guideseqs
+        push!(guides, NucleicAcidGuide(seq))
     end
     return guides
 end # function makeguides
