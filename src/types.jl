@@ -11,10 +11,12 @@ using BioSymbols: BioSymbols.NucleicAcid, BioSymbols.DNA, BioSymbols.RNA
 Concrete guide types
 """
 struct NucleicAcidGuide{A<:NucleicAcidAlphabet}
-    seq::Union{LongSequence{A},Nothing}
-    firstbase::Union{NucleicAcid,Nothing}
-    altbases::Union{Vector{NucleicAcid},Nothing}
-    altseqs::Union{Vector{LongSequence{A}},Nothing}
+    alphabet::Type{A}
+    seq::LongSequence{A}
+    length::Integer
+    firstbase::NucleicAcid
+    altbases::Vector{NucleicAcid}
+    altseqs::Vector{LongSequence{A}}
 end # struct Guide
 
 "An alias for NucleicAcidGuide{A <: NucleicAcidAlphabet{N}}"
