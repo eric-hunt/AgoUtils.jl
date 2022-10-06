@@ -27,3 +27,27 @@ const GuideDNA{N} = NucleicAcidGuide{DNAAlphabet{N}}
 
 "An alias for NucleicAcidGuide{RNAAlphabet{N}}"
 const GuideRNA{N} = NucleicAcidGuide{RNAAlphabet{N}}
+
+"""
+    NucleicAcidGuide(seq::LongSequence{A}) where {A<:NucleicAcidAlphabet}
+
+Construct a new NucleicAcidGuide from a sequence.
+"""
+function NucleicAcidGuide(seq::LongSequence{A}) where {A<:NucleicAcidAlphabet}
+    first = seq[begin]
+    altnucs = setdiff(_altbases(A), [first])
+    altseqs = Vector{LongSequence{A}}(undef, length(altnucs))
+    for n in eachindex(altnucs)
+        altseqs[n] = pushfirst!(seq[begin+1:end], altnucs[n])
+    end
+    NucleicAcidGuide{A}(
+        A,
+        seq,
+        seq.len,
+        first,
+        altnucs,
+        altseqs
+    )
+end
+
+Guide(seq) = NucleicAcidGuide(seq)
