@@ -54,8 +54,8 @@ _altbases(::Type{<:RNAAlphabet}) = BioSequences.symbols(RNAAlphabet{2}())
 Get all sequences for a single guide.
 """
 function _fetchseqs(guide::NucleicAcidGuide)
-	seqs = [guide.seq, guide.altseqs...]
-	return seqs
+    seqs = [guide.seq, guide.altseqs...]
+    return seqs
 end # function _fetchseqs
 
 
