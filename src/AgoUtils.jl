@@ -51,7 +51,7 @@ Compile all guide sequences for a substrate in order.
 """
 function compileguides(guides::Vector{NucleicAcidGuide})
     compiled = mapreduce(_fetchseqs, vcat, guides)
-    guidedict = [(:seqs => compiled)]
+    guidedict = [(:wells => _wells_384[1:length(compiled)]), (:seqs => compiled)]
     guidetable = DataFrame(guidedict)
     return guidetable
 end # function compileguides
