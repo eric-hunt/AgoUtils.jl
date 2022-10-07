@@ -57,3 +57,22 @@ function _fetchseqs(guide::NucleicAcidGuide)
 	seqs = [guide.seq, guide.altseqs...]
 	return seqs
 end # function _fetchseqs
+
+
+const WELL_LETTERS = 'A':'P'
+const WELL_NUMBERS = 1:24
+
+_wells_96 = reduce(
+    vcat,
+    map(n -> map(l -> l * string(n), WELL_LETTERS[1:8]), WELL_NUMBERS[1:12])
+)
+
+_wells_384 = reduce(
+    vcat,
+    vcat(
+        map(n -> map(l -> l * string(n), WELL_LETTERS[1:8]), WELL_NUMBERS[1:12]),
+        map(n -> map(l -> l * string(n), WELL_LETTERS[9:16]), WELL_NUMBERS[1:12]),
+        map(n -> map(l -> l * string(n), WELL_LETTERS[1:8]), WELL_NUMBERS[13:24]),
+        map(n -> map(l -> l * string(n), WELL_LETTERS[9:16]), WELL_NUMBERS[13:24]),
+    )
+)
