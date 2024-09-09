@@ -40,12 +40,12 @@ end # function _makeslices
 
 
 """
-    _altbases(::A) where {A <: NucleicAcidAlphabet}
+    _getbases(::A) where {A <: NucleicAcidAlphabet}
 
-Get alternate bases for Alphabet
+Get relevant bases for (2-bit) Alphabet
 """
-_altbases(::Type{<:DNAAlphabet}) = BioSequences.symbols(DNAAlphabet{2}())
-_altbases(::Type{<:RNAAlphabet}) = BioSequences.symbols(RNAAlphabet{2}())
+_getbases(::Type{<:DNAAlphabet}) = BioSequences.symbols(DNAAlphabet{2}())
+_getbases(::Type{<:RNAAlphabet}) = BioSequences.symbols(RNAAlphabet{2}())
 
 
 """

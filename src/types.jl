@@ -35,7 +35,7 @@ Construct a new NucleicAcidGuide from a sequence.
 function NucleicAcidGuide(seq::LongSequence{A}) where {A<:NucleicAcidAlphabet}
     gc = _calcGC(seq)
     first = seq[begin]
-    altnucs = setdiff(_altbases(A), [first])
+    altnucs = setdiff(_getbases(A), [first])
     altseqs = Vector{LongSequence{A}}(undef, length(altnucs))
     for n in eachindex(altnucs)
         altseqs[n] = pushfirst!(seq[begin+1:end], altnucs[n])
