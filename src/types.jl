@@ -12,6 +12,7 @@ struct NucleicAcidGuide{A<:NucleicAcidAlphabet}
     alphabet::Type{A}
     seq::LongSequence{A}
     length::Integer
+    gc::Float16
     firstbase::NucleicAcid
     altbases::Vector{NucleicAcid}
     altseqs::Vector{LongSequence{A}}
@@ -32,6 +33,7 @@ const GuideRNA{N} = NucleicAcidGuide{RNAAlphabet{N}}
 Construct a new NucleicAcidGuide from a sequence.
 """
 function NucleicAcidGuide(seq::LongSequence{A}) where {A<:NucleicAcidAlphabet}
+    gc = _calcGC(seq)
     first = seq[begin]
     altnucs = setdiff(_altbases(A), [first])
     altseqs = Vector{LongSequence{A}}(undef, length(altnucs))
@@ -42,6 +44,7 @@ function NucleicAcidGuide(seq::LongSequence{A}) where {A<:NucleicAcidAlphabet}
         A,
         seq,
         seq.len,
+        gc,
         first,
         altnucs,
         altseqs
