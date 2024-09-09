@@ -76,3 +76,21 @@ _wells_384 = reduce(
         map(n -> map(l -> l * string(n), WELL_LETTERS[9:16]), WELL_NUMBERS[13:24]),
     )
 )
+
+
+"""
+    _calcGC(seq::BioSequences.LongSequence{<:NucleicAcidAlphabet})
+
+Calculate the GC content of a sequence.
+"""
+function _calcGC(seq::BioSequences.LongNuc)
+	totalcount = 0
+	gccount = 0
+	for nuc in seq
+		totalcount += 1
+		if nuc in [BioSequences.DNA_G, BioSequences.DNA_C]
+			gccount += 1
+		end
+	end
+	return gccount / totalcount
+end # function _calcGC
