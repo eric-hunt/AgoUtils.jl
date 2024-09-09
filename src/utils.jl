@@ -79,11 +79,11 @@ _wells_384 = reduce(
 
 
 """
-    _calcGC(seq::BioSequences.LongNuc{4})
+    _calcGC(seq::BioSequences.LongSequence{<:NucleicAcidAlphabet})
 
 Calculate the GC content of a sequence.
 """
-function _calcGC(seq::BioSequences.LongNuc{4})
+function _calcGC(seq::BioSequences.LongNuc)
 	totalcount = 0
 	gccount = 0
 	for nuc in seq
