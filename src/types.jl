@@ -11,7 +11,7 @@ Concrete guide types
 struct NucleicAcidGuide{A<:NucleicAcidAlphabet}
     alphabet::Type{A}
     seq::LongSequence{A}
-    length::Integer
+    length::Int8
     gc::Float16
     firstbase::NucleicAcid
     altbases::Vector{NucleicAcid}
@@ -19,7 +19,7 @@ struct NucleicAcidGuide{A<:NucleicAcidAlphabet}
 end # struct Guide
 
 "An alias for NucleicAcidGuide{A <: NucleicAcidAlphabet{N}}"
-const Guide{A} = NucleicAcidGuide{A}
+const Guide{A<:NucleicAcidAlphabet} = NucleicAcidGuide{A}
 
 "An alias for NucleicAcidGuide{DNAAlphabet{N}}"
 const GuideDNA{N} = NucleicAcidGuide{DNAAlphabet{N}}
