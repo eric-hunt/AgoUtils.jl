@@ -61,21 +61,46 @@ function compileguides(guides::Vector{NucleicAcidGuide})
 end # function compileguides
 
 
-function exportguides(guides::Vector{NucleicAcidGuide})
-    guidetable = compileguides(guides)
-    timestamp = Dates.format(Dates.now(), "yymmdd_HHMM")
-    CSV.write(
-        expanduser("~/Desktop/guides_$(timestamp).csv"),
-        guidetable
+"""
+    exportguides(
+        guides::DataFrame,
+        dir::AbstractString = joinpath(homedir(), "Desktop"),
+        suffix::AbstractString = ""
     )
-end
 
-function exportguides(guidetable::DataFrame)
-    timestamp = Dates.format(Dates.now(), "yymmdd_HHMM")
+Save guide sequences in CSV format for ordering.
+"""
+function exportguides(
+    guides::DataFrame;
+    dir::AbstractString = joinpath(homedir(), "Desktop"),
+    suffix::AbstractString = ""
+)
+    dir = expanduser(normpath(dir))
+    if !isdir(dir)
+        error("The containing directory path is not valid.")
+    end
+    suffix = replace(suffix, r"\s" => "")
+    timestamp = Dates.format(Dates.now(), "yymmdd_HHMMSS")
     CSV.write(
-        expanduser("~/Desktop/guides_$(timestamp).csv"),
-        guidetable
+        joinpath(
+            dir,
+            string(
+                "guides_",
+                timestamp,
+                # I'm not sure what is considered the best style here..
+                # !isempty(suffix) ? "_" : "",
+                # !isempty(suffix) && "_$suffix",
+                if !isempty(suffix) "_$suffix" end,
+                ".csv"
+            )
+        ),
+        guides
     )
-end
+end # function exportguides
+
+function exportguides(guides::Vector{NucleicAcidGuide}, varargs...)
+    guidetable = compileguides(guides)
+    exportguides(guidetable, varargs...)
+end # function exportguides
 
 end # module
