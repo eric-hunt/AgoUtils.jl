@@ -4,7 +4,7 @@ Utilities
 
 using BioSequences: BioSequences, LongNuc, DNAAlphabet, RNAAlphabet
 
-
+# TODO Create a window_slicer from _makeslices and an index_slicer for creating all guides for a sequence and specific guides for a sequence, respectively.
 """
     _makeslices(
         sequence::S, window::Integer; 

@@ -24,6 +24,7 @@ using DataFrames: DataFrames, DataFrame
 using Dates: Dates
 
 
+# TODO Add option to select slicing algorithm (see utils.jl _makeslices()).
 """
     makeguides(
         target::LongNuc, size::Integer, ::Type{A};
