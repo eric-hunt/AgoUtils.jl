@@ -75,9 +75,14 @@ function exportguides(
     dir::AbstractString = joinpath(homedir(), "Desktop"),
     suffix::AbstractString = ""
 )
-    dir = expanduser(normpath(dir))
+    dir = expanduser(normpath(dir)) 
     if !isdir(dir)
-        error("The containing directory path is not valid.")
+        try
+            mkpath(dir)
+        catch e
+            println("The directory does not exist and could not be created.")
+            rethrow(e)
+        end
     end
     suffix = replace(suffix, r"\s" => "")
     timestamp = Dates.format(Dates.now(), "yymmdd_HHMMSS")
